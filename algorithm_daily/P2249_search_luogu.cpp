@@ -1,44 +1,39 @@
 #include <iostream>
 using namespace std;
 
-int returnnum=-1;
 
 //应当注意题中的输入序列是单调不减的,利用二分法
-int search(int left,int right,int *array,int searchnum)
+int search(int left,int right,int array[],int searchnum)
 {
     // left=1;
     // right=n;
-    if(left>right)
+    if(left==right)
     {
-        return returnnum;
+        if (array[left]==searchnum)
+        {
+            return left;
+        }
+        else
+            return -1;
     }
-    int middle=left+(right-1)/2;
-    if(searchnum==array[middle-1])
+    int middle=(left+right)/2;
+    if(searchnum<=array[middle])
     {
-        returnnum=middle;
-        search(left,middle-1,array,searchnum);
-        // return middle;
-
-    }
-    else if(searchnum<array[middle-1])
-    {
-        right=middle-1;
-        search(left,right,&array[left-1],searchnum);
+        search(left,middle,array,searchnum);
     }
     else
     {
-        left=middle+1;
-        search(left,right,&array[left-1],searchnum);
+        search(middle+1,right,array,searchnum);
     }
 }
 int main()
 {
     int n,m;
     cin>>n>>m;
-    int *array=new int [n];
+    int array[n];
     int searchnumarr[m];
     int temp[m];
-    for(int i=0;i<n;i++)
+    for(int i=1;i<=n;i++)
     {
         cin>>array[i];
     }
@@ -48,7 +43,6 @@ int main()
     }
     for(int i=0;i<m;i++)
     {   
-        returnnum=-1;
         temp[i]=search(1,n,array,searchnumarr[i]);
     }
 
@@ -56,7 +50,6 @@ int main()
     {
         cout<<temp[i]<<" ";
     }
-    delete array;
     return 0;
 }
 
