@@ -2,7 +2,7 @@
 using namespace std;
 
 /*
-二分答案模板
+二分答案模板1
     int l=1,r=ll;// 1 是答案的最小值，ll是答案的最大值
     while(l<=r)
     {
@@ -10,6 +10,14 @@ using namespace std;
         if(q>m)r=mid-1;
         else l=mid+1;
     }
+模板2
+    while (l < r)
+    {
+        int mid = l + r + 1 >> 1;	//(l+r+1)/2
+        if (check(mid))  l = mid;
+        else r = mid - 1;
+    }
+
 */
 // const int L=1e9;
 int dis[50010];
@@ -72,7 +80,7 @@ int main()
     }
     while(left<right)
     {
-        int mid=left+right+1>>1;//为什么+1？
+        int mid=left+right+1>>1;//为什么+1？+2测试也通过
         if(check(mid,n,m))
         {
             left=mid;
@@ -88,6 +96,7 @@ int main()
 
 /*
 两个问题：
-1.check函数的循环问题
-2.取中值加一的问题
+1.check函数的循环问题：for循环中有i++ 在循环体里又写了i++ 采取原先下一跳的方法可以解决
+2.取中值加一的问题：如果left和right的差为1 会死循环
 */
+//洛谷P2678_跳石头问题_二分答案 
