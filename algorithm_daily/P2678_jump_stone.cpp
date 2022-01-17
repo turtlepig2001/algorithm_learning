@@ -18,6 +18,15 @@ using namespace std;
         else r = mid - 1;
     }
 
+比较好用的模板
+int l,r,mid,ans;
+while(l<=r)
+{
+    mid=(l+r)/2;
+    if(check(mid))l=mid+1,ans=mid;
+    else r=mid-1;  
+}
+
 */
 // const int L=1e9;
 int dis[50010];
