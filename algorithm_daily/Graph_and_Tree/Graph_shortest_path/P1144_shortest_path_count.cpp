@@ -67,7 +67,7 @@ void dijkstra()
             }
             else if(dis[t]==(dis[u]+1))
             {
-                num[t]=num[u]+num[t];
+                num[t]=num[u]+num[t];   //100003+1 
                 num[t]=num[t]%mod;
             }
         }
