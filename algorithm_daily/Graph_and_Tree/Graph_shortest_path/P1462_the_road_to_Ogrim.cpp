@@ -52,7 +52,7 @@ int check(int mid)//二分的是金钱   还需要注意起始点和终点也要
         return 0;
     }
     fill(c_hp+1,c_hp+n+1,INF);//距离初始化为无穷
-    fill(vis+1,vis+n+1,INF);
+    fill(vis+1,vis+n+1,false);
     c_hp[1]=0;
     // int temp_hp=b;//剩余血量
     mypriority_queue.push(node(1,c_hp[1]));
