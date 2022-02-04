@@ -176,10 +176,10 @@ int main()
 
 ### （二）算法过程
 ​&emsp;&emsp;1.首先把初始化距离dist数组为图的邻接矩阵，路径数组path初始化为-1（一些题目中不需要记录路径）。其中对于邻接矩阵中的数首先初始化为正无穷，如果两个顶点存在边则初始化为权重。  
-​&emsp;&emsp;2.对于每一对顶点 u 和 v，看看是否存在一个顶点 w 使得从 u 到 w 再到 v 比己知的路径更短。如果是就更新它。
-&emsp;&emsp;状态转移方程为:
-&emsp;&emsp;如果 dist[i][k]+dist[k][j] < dist[i][j]
-&emsp;&emsp;则dist[i][j] = dist[i][k]+dist[k][j]
+​&emsp;&emsp;2.对于每一对顶点 u 和 v，看看是否存在一个顶点 w 使得从 u 到 w 再到 v 比己知的路径更短。如果是就更新它。 
+&emsp;&emsp;状态转移方程为:  
+&emsp;&emsp;如果 dist[i][k]+dist[k][j] < dist[i][j]  
+&emsp;&emsp;则dist[i][j] = dist[i][k]+dist[k][j]  
 ###  （三）主要代码
 未加入优化：
 ```c++
