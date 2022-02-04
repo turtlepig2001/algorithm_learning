@@ -180,7 +180,7 @@ int main()
 &emsp;&emsp;状态转移方程为:
 &emsp;&emsp;如果 dist[i][k]+dist[k][j] < dist[i][j]
 &emsp;&emsp;则dist[i][j] = dist[i][k]+dist[k][j]
-### (三)主要代码
+###  （三）主要代码
 未加入优化：
 ```c++
 for(int k=1;k<=n;++k)
