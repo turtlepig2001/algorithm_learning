@@ -168,15 +168,15 @@ int main()
 
 ```
 
-## 二、弗洛伊德（Floyed）算法
+## 二、弗洛伊德（Floyd）算法
 
-### （一）Floyed算法思想  
+### （一）Floyd算法思想  
 &emsp;&emsp;Floyd算法是一个经典的动态规划算法。  
 &emsp;&emsp;从任意节点i到任意节点j的最短路径不外乎2种可能，一是直接从i到j，二是从i经过若干个节点k到j。所以，我们假设Dis(i,j)为节点u到节点v的最短路径的距离，对于每一个节点k，我们检查Dis(i,k) + Dis(k,j) < Dis(i,j)是否成立，如果成立，证明从i到k再到j的路径比i直接到j的路径短，我们便设置Dis(i,j) = Dis(i,k) + Dis(k,j)，这样一来，当我们遍历完所有节点k，Dis(i,j)中记录的便是i到j的最短路径的距离。
 
 ### （二）算法过程
 ​&emsp;&emsp;1.首先把初始化距离dist数组为图的邻接矩阵，路径数组path初始化为-1（一些题目中不需要记录路径）。其中对于邻接矩阵中的数首先初始化为正无穷，如果两个顶点存在边则初始化为权重。  
-​&emsp;&emsp;2.对于每一对顶点 u 和 v，看看是否存在一个顶点 w 使得从 u 到 w 再到 v 比己知的路径更短。如果是就更新它。 
+​&emsp;&emsp;2.对于每一对顶点 u 和 v，看看是否存在一个顶点 w 使得从 u 到 w 再到 v 比己知的路径更短。如果是就更新它。  
 &emsp;&emsp;状态转移方程为:  
 &emsp;&emsp;如果 dist[i][k]+dist[k][j] < dist[i][j]  
 &emsp;&emsp;则dist[i][j] = dist[i][k]+dist[k][j]  
@@ -192,16 +192,137 @@ for(int k=1;k<=n;++k)
 ```c++
 //每次枚举k时都要判定在w时可不可以到这个点，并且看是否标记了k。(洛谷P1119)
 for(int k=0;k<n;k++)
+{
+	if(t[k]<=w&&!vis[k])
 	{
-		if(t[k]<=w&&!vis[k])
-		{
-			vis[k]=1;
-			for(int i=0;i<n;i++)
-				for(int j=0;j<n;j++)
-					if(f[i][j]>f[i][k]+f[k][j])
-					f[i][j]=f[i][k]+f[k][j];
+		vis[k]=1;
+		for(int i=0;i<n;i++)
+			for(int j=0;j<n;j++)
+				if(f[i][j]>f[i][k]+f[k][j])
+				    f[i][j]=f[i][k]+f[k][j];
 		}
-	}
+}
 ```
 ### （四）模板题
 &emsp;&emsp;洛谷P1119，暂不更新
+```c++
+//用弗洛伊德算法求解P1119
+#include <iostream>
+#include <algorithm>
+#include <climits>
+#include <cstdio>
+#include <cstring>
+#include <queue>
+#include <vector>
+
+using namespace std;
+const int N=210;
+// const int M=N*(N-1)/2;
+
+const int length=1e9;//道路的最大长度 
+/*
+length不可以设置为稍大于10000的数也不能设置为INF  应设置为较大的数如1e9
+*/
+int n;//村庄数目
+int m;//公路数目
+
+int q;//nums_of_query
+
+int t[N];//time
+int cost[N][N];//
+// int vis[N];//已经拓展了的节点要省去遍历过程
+
+void Floyd(int k)
+{
+    for(int i=0;i<n; i++)
+    {
+        for(int j=0;j<n;j++)
+        {
+            if (cost[i][j]>(cost[i][k]+cost[k][j]))
+            {
+                cost[i][j]=cost[i][k]+cost[k][j];
+                cost[j][i]=cost[i][j];//双向道路记得要同时更新
+            }
+        }
+    }
+}
+
+
+int main()
+{
+    cin>>n>>m;
+    for(int i=0;i<n;i++)
+    {
+        cin>>t[i];
+    }
+    fill(cost[0],cost[0]+N*N,length);
+    for (int i = 0; i < n; i++)
+    {
+        cost[i][i]= 0;
+    }
+    for(int i=0;i<m;i++)
+    {
+        int from,to,len;
+        cin>>from>>to>>len;
+        cost[from][to]=len;
+        cost[to][from]=len;//公路是双向的
+    }
+    cin>>q;
+    int now=0;
+    int ans[q];
+    for(int i=0;i<q; i++)
+    {
+        int x,y,time;
+        cin>>x>>y>>time;
+        // if(t[x]>time||t[y]>time)
+        // {
+        //     ans[i]=-1;
+        //     continue;
+        // }
+        // else if(time!=now)//时间增加要更新
+        // {
+        //     now=time;
+        //     for(int i=0;i<n;i++)
+        //     {
+        //         if(t[i]<=time)
+        //         {
+        //             Floyd(i);
+        //         }
+        //     }
+        // }
+        // if(cost[x][y]<length)
+        // {
+        //     ans[i]=cost[x][y];
+        // }
+        // else
+        // {
+        //     ans[i]=-1;
+        // }
+        while(t[now]<=time&&now<n)
+        {
+            Floyd(now);
+            now++;
+        }
+        if(t[x]>time||t[y]>time||cost[x][y]==length)
+        {
+            ans[i]=-1;
+        }
+        else
+        {
+            ans[i]=cost[x][y];
+        }
+    }
+    for(int i=0;i<q; i++)
+    {
+        cout<<ans[i]<<endl;
+    }
+    return 0;
+}
+```
+&emsp;&emsp;关于本题的理解：  
+&emsp;&emsp;1.这个算法的主要思路，就是通过其他的点进行中转来求的两点之间的最短路。因为我们知道，两点之间有多条路，如果换一条路可以缩短距离的话，就更新最短距离。而它最本质的思想，就是用其他的点进行中转，从而达到求出最短路的目的。  
+&emsp;&emsp;2.弗洛伊德算法的基本思想就是，最开始只允许经过1号顶点进行中转，接下来只允许经过1和2号顶点进行中转……允许经过1~n号所有顶点进行中转，求任意两点之间的最短路程。用一句话概括就是：从i号顶点到j号顶点只经过前k号点的最短路程。（而不是只允许第k个节点）  
+&emsp;&emsp;3.题意：所有的边全部给出，按照时间顺序更新每一个可用的点（即修建好村庄），对于每个时间点进行两点之间询问，求对于目前建设的所有村庄来说任意两点之间的最短路。  
+&emsp;&emsp;4.可以看到程序q次询问的部分中，注释部分使用的办法是：对于每次询问都进行从0到k的遍历，事实上造成了很多次重复的循环。因为题目给出的重建时间是单调不减的，同时q次询问的时间也同样是单调的时间，所以新的方法设置了一个now指向现在已经建起的村庄，就相当于Floyd算法中逐渐添加节点的操作。后面时间的询问可以使用原先已经更新过的图，在其中添加新的节点即可。  
+&emsp;&emsp;5.但是本题和单纯的Floyd算法又稍有不同：因为我们需要考虑在询问时间点的起始点是否已经建立起来，如果有任意一个未能建完，就要赋值-1并跳过。但是实际上跳过并不对，因为now++后再在某个时间点有些村庄建完了，但这时算法中的那个“k”值已经跳过去了，可能对于某些k值，图中新加的节点会使某些路径更短，但已经没法更新了。所以程序中的方法是，先进行全图更新（因为边、点这些值我们都是知道的，建设时间的限制无非是后天限制），在更新后再判断起始节点是否满足时间限制。  
+&emsp;&emsp;6.至于length值的设置，只能说是太小可能会等于相加值，还是应该设置为很大的数，但是太大有可能会变成负数（至于为何我也没有太好的理解）。
