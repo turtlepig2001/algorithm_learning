@@ -204,7 +204,7 @@ for(int k=0;k<n;k++)
 }
 ```
 ### （四）模板题
-&emsp;&emsp;洛谷P1119，暂不更新
+&emsp;&emsp;洛谷P1119
 ```c++
 //用弗洛伊德算法求解P1119
 #include <iostream>
