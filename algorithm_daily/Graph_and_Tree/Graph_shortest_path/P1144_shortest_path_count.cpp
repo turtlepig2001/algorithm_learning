@@ -67,8 +67,8 @@ void dijkstra()
             }
             else if(dis[t]==(dis[u]+1))
             {
-                num[t]=num[u]+num[t];   //100003+1 
-                num[t]=num[t]%mod;
+                num[t]=num[u]+num[t];  
+                num[t]=num[t]%mod; //这里没有问题，因为这里是取余而不是除法 就是（x+1）%100003=x%100003+1
             }
         }
     }
